@@ -146,7 +146,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
             firstDay: DateTime(2020),
             lastDay: DateTime(2030),
             focusedDay: selectedDate,
-            weekendDays: const [1],
+            weekendDays: const [],
             selectedDayPredicate: (day) => isSameDay(day, selectedDate),
             startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: (selectedDay, focusedDay) {
@@ -223,7 +223,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
             ),
           ),
           Text(
-            '@Alexander_nt',
+            't.me/@Alexander_nt',
             style: GoogleFonts.notoSerif(
                 textStyle: Theme.of(context).textTheme.displayLarge,
                 fontSize: 7,
