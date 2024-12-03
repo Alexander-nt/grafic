@@ -55,8 +55,8 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
     return calculatedShifts;
   }
 
-  Map<String, Map<String, double>> calculateMonthlyStats(DateTime month) {
-    Map<String, Map<String, double>> monthlyStats = {
+  Map<String, Map<String, dynamic>> calculateMonthlyStats(DateTime month) {
+    Map<String, Map<String, dynamic>> monthlyStats = {
       for (var brigade in brigades)
         brigade: {
           'hours': 0,
@@ -97,7 +97,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
     return monthlyStats;
   }
 
-  void showShiftDetails(BuildContext context, String brigade, Map<String, double> stats) {
+  void showShiftDetails(BuildContext context, String brigade, Map<String, dynamic> stats) {
     showDialog(
       context: context,
       builder: (context) {
@@ -124,7 +124,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
   Widget build(BuildContext context) {
     List<String> todayShifts = getShiftsForDate(selectedDate);
 
-    Map<String, Map<String, double>> monthlyStats =
+    Map<String, Map<String, dynamic>> monthlyStats =
         calculateMonthlyStats(selectedDate);
 
     return Scaffold(
@@ -202,7 +202,8 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                   child: ListTile(
                     title: Text(
                       brigade,
-                      style: const TextStyle(
+                      style: GoogleFonts.roboto(
+                        textStyle: Theme.of(context).textTheme.displayLarge,
                         fontSize: 20,
                         color: Colors.blueGrey,
                       ),
