@@ -141,6 +141,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               textAlign: TextAlign.center,
             ),
           ),
+          //Календарь
           TableCalendar(
             locale: 'ru_RU',
             firstDay: DateTime(2020),
