@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grafic/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,16 +18,18 @@ class ShiftSchedulerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'График смен',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
-      home: const ShiftScheduleScreen(),
+      theme: lightTheme, // Подключение светлой темы
+      darkTheme: darkTheme, // Подключение темной темы
+      themeMode: ThemeMode.system, // Выбор темы в зависимости от настроек системы
+      home: const ShiftScheduleScreen(title: 'График смен'),
     );
   }
 }
 
 class ShiftScheduleScreen extends StatefulWidget {
-  const ShiftScheduleScreen({super.key});
+  const ShiftScheduleScreen({super.key, required this.title});
+
+  final String title;
 
   @override
   _ShiftScheduleScreenState createState() => _ShiftScheduleScreenState();
@@ -128,24 +131,14 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
         calculateMonthlyStats(selectedDate);
 
     return Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 35.0),
-            child: Text(
-              'График смен',
-              style: GoogleFonts.notoSerif(
-                textStyle: Theme.of(context).textTheme.displayLarge,
-                fontSize: 48,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
           //Календарь
           TableCalendar(
             locale: 'ru_RU',
-            firstDay: DateTime(2020),
-            lastDay: DateTime(2030),
+            firstDay: DateTime(2000),
+            lastDay: DateTime(2050),
             focusedDay: selectedDate,
             weekendDays: const [],
             selectedDayPredicate: (day) => isSameDay(day, selectedDate),
@@ -155,41 +148,8 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                 selectedDate = selectedDay;
               });
             },
-            calendarStyle: const CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.blueAccent,
-                shape: BoxShape.circle,
-              ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
-              ),
-              defaultDecoration: BoxDecoration(
-                color: Colors.white10,
-                shape: BoxShape.circle,
-              ),
-              // defaultTextStyle: TextStyle(
-              //   color: Colors.white,
-              // ),
-              weekendDecoration: BoxDecoration(
-                color: Colors.white10,
-                shape: BoxShape.circle,
-              ),
-              // weekendTextStyle: TextStyle(
-              //   color: Colors.white,
-              // ),
-              // outsideDecoration: BoxDecoration(
-              //   color: Colors.black38,
-              //   shape: BoxShape.circle,
-              // ),
-              // outsideTextStyle: TextStyle(
-              //   color: Colors.grey,
-              // ),
-            ),
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
+            calendarStyle: Theme.of(context).calendarStyle, // Используем стили темы
+            headerStyle: Theme.of(context).headerStyle, // Используем стили темы
           ),
           const SizedBox(height: 10),
           Expanded(
@@ -224,16 +184,16 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               },
             ),
           ),
-          Text(
-            't.me/@Alexander_nt',
-            style: GoogleFonts.notoSerif(
-                textStyle: Theme.of(context).textTheme.displayLarge,
-                fontSize: 7,
+          // Text(
+          //   't.me/@Alexander_nt',
+          //   style: GoogleFonts.notoSerif(
+          //       textStyle: Theme.of(context).textTheme.displayLarge,
+          //       fontSize: 7,
                 // fontWeight: FontWeight.w500,
                 // fontStyle: FontStyle.italic,
                 // color: Colors.red
-              ),
-          ),
+          //     ),
+          // ),
         ],
       ),
     );
