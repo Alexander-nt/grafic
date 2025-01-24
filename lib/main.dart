@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grafic/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
@@ -96,7 +97,6 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
         }
       }
     }
-
     return monthlyStats;
   }
 
@@ -104,8 +104,9 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
     showDialog(
       context: context,
       builder: (context) {
+        String monthName = DateFormat.MMMM('ru_RU').format(selectedDate);
         return AlertDialog(
-          title: Text(brigade),
+          title: Text('За $monthName месяц:''\n''$brigade' ),
           content: Text(
             'Дневные смены: ${stats['dayShifts']}\n'
             'Ночные смены: ${stats['nightShifts']}\n'

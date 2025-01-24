@@ -9,7 +9,7 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white, // Фон для светлой темы
 
   appBarTheme: AppBarTheme(
-    toolbarHeight: 100.0, // Высота AppBar
+    toolbarHeight: 70.0, // Высота AppBar
     backgroundColor: Colors.white, // Фон AppBar
     foregroundColor: Colors.black, // Цвет текста и иконок
     centerTitle: true, // Центрирование текста
@@ -33,7 +33,7 @@ ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: Colors.black, // Фон для темной темы
 
   appBarTheme: AppBarTheme(
-    toolbarHeight: 100.0, // Высота AppBar
+    toolbarHeight: 70.0, // Высота AppBar
     backgroundColor: Colors.black, // Фон AppBar
     foregroundColor: Colors.white, // Цвет текста и иконок
     centerTitle: true, // Центрирование текста
@@ -78,14 +78,15 @@ extension CalendarTheme on ThemeData {
         //   color: Colors.grey,
         //   shape: BoxShape.circle,
         // ),
-        outsideTextStyle: textTheme.bodySmall!.copyWith(
+        outsideTextStyle: textTheme.bodySmall!.copyWith(//определяется темой bodySmall
           // color: Colors.blueGrey, // Цвет текста для дней вне текущего месяца
         ),
       );
 
   HeaderStyle get headerStyle => const HeaderStyle(
-        // formatButtonVisible: false,
+        formatButtonVisible: false,
         titleCentered: true,
+        
         titleTextStyle: TextStyle(
           fontSize: 20,
           // fontWeight: FontWeight.bold,
