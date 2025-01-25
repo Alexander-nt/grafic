@@ -136,9 +136,31 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
         calculateMonthlyStats(selectedDate);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(title: Text(widget.title),
+      actions: [
+        if (selectedDate.year != DateTime.now().year || selectedDate.month != DateTime.now().month)
+        IconButton(
+          color: Colors.green,
+          icon: const Icon(Icons.sync, size: 32,),
+          onPressed: () {
+            setState(() {
+              selectedDate = DateTime.now(); // Возврат к текущему дню
+            });
+          },
+        ),
+      ],
+    ),
       body: Column(
         children: [
+          // if (selectedDate.year != DateTime.now().year || selectedDate.month != DateTime.now().month)
+          // ElevatedButton(
+          //   onPressed: () {
+          //     setState(() {
+          //       selectedDate = DateTime.now(); // Возвращаем выбранную дату на сегодня
+          //     });
+          //   },
+          //   child: const Text('Вернуться к текущей дате'),
+          // ),
           //Календарь
           TableCalendar(
             locale: 'ru_RU',
@@ -153,9 +175,15 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                 selectedDate = selectedDay;
               });
             },
+            // onPageChanged: (selectedDay) {
+            //   setState(() {
+            //     selectedDate = selectedDay; // Обновляем текущий месяц
+            //   });
+            // },
             calendarStyle: Theme.of(context).calendarStyle, // Используем стили темы
             headerStyle: Theme.of(context).headerStyle, // Используем стили темы
           ),
+          
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
@@ -185,16 +213,6 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               },
             ),
           ),
-          // Text(
-          //   't.me/@Alexander_nt',
-          //   style: GoogleFonts.notoSerif(
-          //       textStyle: Theme.of(context).textTheme.displayLarge,
-          //       fontSize: 7,
-                // fontWeight: FontWeight.w500,
-                // fontStyle: FontStyle.italic,
-                // color: Colors.red
-          //     ),
-          // ),
         ],
       ),
     );
