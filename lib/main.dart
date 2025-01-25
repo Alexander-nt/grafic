@@ -3,7 +3,6 @@ import 'package:grafic/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +18,9 @@ class ShiftSchedulerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'График смен',
-      theme: lightTheme, // Подключение светлой темы
-      darkTheme: darkTheme, // Подключение темной темы
+      theme: customTheme(Brightness.light), // Подключение светлой темы
+      darkTheme: customTheme(Brightness.dark), // Темная тема
+      // darkTheme: darkTheme, // Подключение темной темы
       themeMode: ThemeMode.system, // Выбор темы в зависимости от настроек системы
       home: const ShiftScheduleScreen(title: 'График смен'),
     );
@@ -106,19 +106,23 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
       builder: (context) {
         String monthName = DateFormat.MMMM('ru_RU').format(selectedDate);
         return AlertDialog(
-          title: Text('За $monthName месяц:''\n''$brigade' ),
+          title: Text(
+            'За $monthName месяц:''\n''$brigade',
+            style: Theme.of(context).textTheme.displayLarge,
+            ),
           content: Text(
-            'Дневные смены: ${stats['dayShifts']}\n'
-            'Ночные смены: ${stats['nightShifts']}\n'
+            'Дневные смены: ${stats['dayShifts']}\n\n'
+            'Ночные смены: ${stats['nightShifts']}\n\n'
             // 'С ночной смены: ${stats['fromNightShifts']}\n'
             'Рабочие часы за месяц: ${stats['hours']} ч',
+            style: Theme.of(context).textTheme.displaySmall,
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Закрыть'),
-            ),
-          ],
+          // actions: [
+            // TextButton(
+            //   onPressed: () => Navigator.of(context).pop(),
+            //   child: const Text('Закрыть'),
+            // ),
+          // ],
         );
       },
     );
@@ -164,19 +168,15 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                   child: ListTile(
                     title: Text(
                       brigade,
-                      style: GoogleFonts.roboto(
-                        textStyle: Theme.of(context).textTheme.displayLarge,
-                        fontSize: 20,
-                        color: Colors.blueGrey,
-                      ),
+                        style: Theme.of(context).textTheme.titleLarge,
                     ),
                     subtitle: Text(
                       todayShifts[index],
-                      style: GoogleFonts.roboto(
-                        textStyle: Theme.of(context).textTheme.displayLarge,
-                        fontSize: 20,
-                      ),
+                        style: Theme.of(context).textTheme.titleMedium,
                     ),
+                    splashColor:Colors.blueAccent,
+                    trailing: const Icon(Icons.touch_app, size: 35,),
+                    // leading: const Icon(Icons.radio_button_checked, color: Colors.red),
                     onLongPress: () {
                       showShiftDetails(context, brigade, stats);
                     },
