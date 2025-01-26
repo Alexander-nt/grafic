@@ -41,6 +41,8 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
   final List<String> shifts = ['С ночной смены','Выходной','Дневная смена (08:00–20:00)','Ночная смена (20:00–08:00)'];
 
   DateTime selectedDate = DateTime.now();
+  DateTime visibleMonth = DateTime.now();
+  DateTime focusedDay = DateTime.now();
 
   final double dayShiftHours = 11.5;
   final double nightShiftHours = 4.0;
@@ -106,8 +108,9 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
       builder: (context) {
         String monthName = DateFormat.MMMM('ru_RU').format(selectedDate);
         return AlertDialog(
+          // elevation: 90,
           title: Text(
-            'За $monthName месяц:''\n''$brigade',
+            'За $monthName месяц:''\n\n''$brigade',
             style: Theme.of(context).textTheme.displayLarge,
             ),
           content: Text(
@@ -137,54 +140,62 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.title),
-      actions: [
-        if (selectedDate.year != DateTime.now().year || selectedDate.month != DateTime.now().month)
-        IconButton(
-          color: Colors.green,
-          icon: const Icon(Icons.sync, size: 32,),
-          onPressed: () {
-            setState(() {
-              selectedDate = DateTime.now(); // Возврат к текущему дню
-            });
-          },
-        ),
-      ],
+      // actions: [
+      //   if (focusedDay.year != DateTime.now().year || focusedDay.month != DateTime.now().month)
+      //   IconButton(
+      //     color: Colors.green,
+      //     icon: const Icon(Icons.sync, size: 32,),
+      //     onPressed: () {
+      //       setState(() {
+      //         focusedDay = DateTime.now(); // Возврат к текущему дню
+      //         // visibleMonth = DateTime.now(); // Возврат к текущему дню
+      //         selectedDate = DateTime.now(); // Возврат к текущему дню
+      //       });
+      //     },
+      //   ),
+      // ],
     ),
       body: Column(
         children: [
-          // if (selectedDate.year != DateTime.now().year || selectedDate.month != DateTime.now().month)
-          // ElevatedButton(
-          //   onPressed: () {
-          //     setState(() {
-          //       selectedDate = DateTime.now(); // Возвращаем выбранную дату на сегодня
-          //     });
-          //   },
-          //   child: const Text('Вернуться к текущей дате'),
-          // ),
           //Календарь
           TableCalendar(
             locale: 'ru_RU',
             firstDay: DateTime(2000),
             lastDay: DateTime(2050),
-            focusedDay: selectedDate,
+            focusedDay: focusedDay,
             weekendDays: const [],
             selectedDayPredicate: (day) => isSameDay(day, selectedDate),
             startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                selectedDate = selectedDay;
+                selectedDate = selectedDay; // Обновляем выбранную дату
+                this.focusedDay = focusedDay;
               });
             },
-            // onPageChanged: (selectedDay) {
-            //   setState(() {
-            //     selectedDate = selectedDay; // Обновляем текущий месяц
-            //   });
-            // },
+            onPageChanged: (newMonth) {
+              // Обновляем видимый месяц при перелистывании
+              setState(() {
+                visibleMonth = newMonth; // Обновляем только видимый месяц
+                focusedDay = newMonth; // Также обновляем сосредоточенный день
+              });
+            },
             calendarStyle: Theme.of(context).calendarStyle, // Используем стили темы
             headerStyle: Theme.of(context).headerStyle, // Используем стили темы
           ),
-          
-          const SizedBox(height: 10),
+          if (focusedDay.year != DateTime.now().year || focusedDay.month != DateTime.now().month)
+          FilledButton(
+            onPressed: () {
+              setState(() {
+                selectedDate = DateTime.now(); // Возвращаем выбранную дату на сегодня
+                focusedDay = DateTime.now(); // Возвращаем выбранную дату на сегодня
+              });
+            },
+            // icon: const Icon(Icons.sync, size: 32,),
+            child: const Text('Вернуться к текущему месяцу'),
+          ),
+          if (focusedDay.month == DateTime.now().month)
+          if ( focusedDay.year == DateTime.now().year)
+          const SizedBox(height: 48),
           Expanded(
             child: ListView.builder(
               itemCount: brigades.length,

@@ -5,9 +5,9 @@ import 'package:table_calendar/table_calendar.dart';
 ThemeData customTheme(Brightness brightness) {
   return ThemeData(
     brightness: brightness,
-    primaryColor: brightness == Brightness.light
-        ? Colors.red // Для светлой темы
-        : Colors.lightBlue, // Для темной темы
+    // primaryColor: brightness == Brightness.light
+    //     ? Colors.red // Для светлой темы
+    //     : Colors.lightBlue, // Для темной темы
 
     scaffoldBackgroundColor: brightness == Brightness.light
         ? Colors.white // Фон для светлой темы
@@ -41,7 +41,7 @@ ThemeData customTheme(Brightness brightness) {
         color: brightness == Brightness.light
             ? Colors.black // Цвет текста для светлой темы
             : Colors.white, // Цвет текста для темной темы
-            fontSize: 15,
+            fontSize: 20,
       ),
       titleLarge: TextStyle(// Текст бригады
         fontSize: 20,
