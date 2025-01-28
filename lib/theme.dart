@@ -5,9 +5,13 @@ import 'package:table_calendar/table_calendar.dart';
 ThemeData customTheme(Brightness brightness) {
   return ThemeData(
     brightness: brightness,
-    // primaryColor: brightness == Brightness.light
-    //     ? Colors.red // Для светлой темы
-    //     : Colors.lightBlue, // Для темной темы
+    primaryColor: brightness == Brightness.light
+        ? Colors.white // Для светлой темы
+        : Colors.black, // Для темной темы
+        
+    // dialogBackgroundColor: brightness == Brightness.light
+    //     ? Colors.white // Фон для светлой темы
+    //     : Colors.black, // Ф,
 
     scaffoldBackgroundColor: brightness == Brightness.light
         ? Colors.white // Фон для светлой темы
@@ -37,20 +41,32 @@ ThemeData customTheme(Brightness brightness) {
             : Colors.white, // Цвет текста для темной темы
             fontSize: 25,
       ),
+      displayMedium: TextStyle(
+        color: brightness == Brightness.light
+            ? Colors.black // Цвет текста для светлой темы
+            : Colors.white, // Цвет текста для темной темы
+            fontSize: 23,
+      ),
       displaySmall: TextStyle(
         color: brightness == Brightness.light
             ? Colors.black // Цвет текста для светлой темы
             : Colors.white, // Цвет текста для темной темы
-            fontSize: 20,
+            fontSize: 18,
       ),
       titleLarge: TextStyle(// Текст бригады
-        fontSize: 20,
+        fontSize: 25,
         color: brightness == Brightness.light
             ? Colors.grey[600] // Текст бригады (светлая тема)
             : Colors.grey[400], // Текст бригады (темная тема)
       ),
       titleMedium: TextStyle(// Текст смены
-        fontSize: 18,
+        fontSize: 23,
+        color: brightness == Brightness.light
+            ? Colors.black // Текст смены (светлая тема)
+            : Colors.white, // Текст смены (темная тема)
+      ),
+      headlineSmall: TextStyle(// Текст кнопки
+        fontSize: 15,
         color: brightness == Brightness.light
             ? Colors.black // Текст смены (светлая тема)
             : Colors.white, // Текст смены (темная тема)
@@ -61,18 +77,33 @@ ThemeData customTheme(Brightness brightness) {
 
 extension CalendarTheme on ThemeData {
   CalendarStyle get calendarStyle => CalendarStyle(
+
         todayDecoration: BoxDecoration(// Цвет выделения текущего дня
           color: brightness == Brightness.light
               ? Colors.green // Для светлой темы
               : Colors.green, // Для темной темы
           shape: BoxShape.circle,// Круглая форма для дня
         ),
+        todayTextStyle: TextStyle(// Цвет текста выделения текущего дня
+          color: brightness == Brightness.light
+              ? Colors.black // Текст для светлой темы
+              : Colors.white, // Текст для темной темы
+              fontSize: 18,
+        ),
+
         selectedDecoration: BoxDecoration(// Цвет выделения выбранного дня
           color: brightness == Brightness.light
               ? Colors.blueAccent // Светлая тема
               : Colors.blueAccent, // Темная тема
           shape: BoxShape.circle,
         ),
+        selectedTextStyle: TextStyle(// Цвет текста выделения выбранного дня
+          color: brightness == Brightness.light
+              ? Colors.black // Текст для светлой темы
+              : Colors.white, // Текст для темной темы
+              fontSize: 23,
+        ),
+
         defaultDecoration: BoxDecoration(// Цвет для дней текущего месяца
           color: brightness == Brightness.light
               ? Colors.black12
@@ -83,18 +114,20 @@ extension CalendarTheme on ThemeData {
           color: brightness == Brightness.light
               ? Colors.black // Текст для светлой темы
               : Colors.white, // Текст для темной темы
+              fontSize: 18,
         ),
-        weekendDecoration: BoxDecoration(// Цвет для выходных дней
-          color: brightness == Brightness.light
-              ? Colors.white
-              : Colors.black12,
-          shape: BoxShape.circle,
-        ),
-        weekendTextStyle: TextStyle(// Цвет текста выходных дней
-          color: brightness == Brightness.light
-              ? Colors.red // Выходные для светлой темы
-              : Colors.orange, // Выходные для темной темы
-        ),
+
+        // weekendDecoration: BoxDecoration(// Цвет для выходных дней
+        //   color: brightness == Brightness.light
+        //       ? Colors.white
+        //       : Colors.black12,
+        //   shape: BoxShape.circle,
+        // ),
+        // weekendTextStyle: TextStyle(// Цвет текста выходных дней
+        //   color: brightness == Brightness.light
+        //       ? Colors.red // Выходные для светлой темы
+        //       : Colors.orange, // Выходные для темной темы
+        // ),
         // outsideDecoration: const BoxDecoration(
         //   color: Colors.grey, // Цвет для дней вне текущего месяца
         //   shape: BoxShape.circle,
@@ -112,7 +145,7 @@ extension CalendarTheme on ThemeData {
         titleCentered: true,
         
         titleTextStyle: TextStyle(
-          fontSize: 20,
+          fontSize: 23,
           // fontWeight: FontWeight.bold,
           // color: Colors.black,
         ),

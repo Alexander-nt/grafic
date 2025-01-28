@@ -3,6 +3,7 @@ import 'package:grafic/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,14 @@ class ShiftSchedulerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+       builder: (context, child) {
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.noScaling, // Отключение масштабирования
+      ),
+      child: child!,
+    );
+  },
       title: 'График смен',
       theme: customTheme(Brightness.light), // Подключение светлой темы
       darkTheme: customTheme(Brightness.dark), // Темная тема
@@ -37,7 +46,7 @@ class ShiftScheduleScreen extends StatefulWidget {
 }
 
 class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
-  final List<String> brigades = ['1(2)-я бригада','2(3)-я бригада','3(1)-я бригада','4(4)-я бригада'];
+  List<String> brigades = ['1(2)-я бригада','2(3)-я бригада','3(1)-я бригада','4(4)-я бригада'];
   final List<String> shifts = ['С ночной смены','Выходной','Дневная смена (08:00–20:00)','Ночная смена (20:00–08:00)'];
 
   DateTime selectedDate = DateTime.now();
@@ -47,6 +56,26 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
   final double dayShiftHours = 11.5;
   final double nightShiftHours = 4.0;
   final double fromNightShiftHours = 7.5;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBrigadeNames(); // Загрузка сохраненных названий при запуске
+  }
+
+  // Загрузка названий бригад из SharedPreferences
+  Future<void> _loadBrigadeNames() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      brigades = prefs.getStringList('brigades') ?? brigades;
+    });
+  }
+
+  // Сохранение названий бригад в SharedPreferences
+  Future<void> _saveBrigadeNames() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('brigades', brigades);
+  }
 
   List<String> getShiftsForDate(DateTime date) {
     int dayIndex = date.difference(DateTime(2024, 1, 2)).inDays % 4;
@@ -110,22 +139,86 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
         return AlertDialog(
           // elevation: 90,
           title: Text(
-            'За $monthName месяц:''\n\n''$brigade',
+            brigade,
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.displayLarge,
             ),
-          content: Text(
-            'Дневные смены: ${stats['dayShifts']}\n\n'
-            'Ночные смены: ${stats['nightShifts']}\n\n'
-            // 'С ночной смены: ${stats['fromNightShifts']}\n'
-            'Рабочие часы за месяц: ${stats['hours']} ч',
-            style: Theme.of(context).textTheme.displaySmall,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '\nЗа $monthName месяц:\n',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              Text(
+                'Дневные смены: ${stats['dayShifts']}',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              const Divider(),
+              Text(
+                'Ночные смены: ${stats['nightShifts']}',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              const Divider(),
+              Text(
+                'Рабочие часы за месяц: ${stats['hours']} ч',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              const Divider()
+            ],
           ),
-          // actions: [
-            // TextButton(
-            //   onPressed: () => Navigator.of(context).pop(),
-            //   child: const Text('Закрыть'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Закрыть',
+                style: Theme.of(context).textTheme.headlineSmall
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void editBrigadeName(BuildContext context, int index) {
+    TextEditingController textController = TextEditingController(text: brigades[index]);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Изменить название бригады'),
+          content: TextField(
+            controller: textController,
+            style: Theme.of(context).textTheme.displayLarge,
+            // decoration: const InputDecoration(
+            //   labelText: 'Название бригады',
             // ),
-          // ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Отмена',
+              style: Theme.of(context).textTheme.headlineSmall
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  brigades[index] = textController.text;
+                });
+                _saveBrigadeNames();
+                Navigator.of(context).pop();
+              },
+              child: Text('Сохранить',
+              style: Theme.of(context).textTheme.headlineSmall
+              ),
+            ),
+          ],
         );
       },
     );
@@ -169,7 +262,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 selectedDate = selectedDay; // Обновляем выбранную дату
-                this.focusedDay = focusedDay;
+                this.focusedDay = selectedDate;
               });
             },
             onPageChanged: (newMonth) {
@@ -190,8 +283,12 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                 focusedDay = DateTime.now(); // Возвращаем выбранную дату на сегодня
               });
             },
+            style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.green),),
             // icon: const Icon(Icons.sync, size: 32,),
-            child: const Text('Вернуться к текущему месяцу'),
+            child: Text(
+              'Вернуться к текущему месяцу',
+              style: Theme.of(context).textTheme.displaySmall,
+              ),
           ),
           if (focusedDay.month == DateTime.now().month)
           if ( focusedDay.year == DateTime.now().year)
@@ -214,10 +311,17 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                         style: Theme.of(context).textTheme.titleMedium,
                     ),
                     splashColor:Colors.blueAccent,
-                    trailing: const Icon(Icons.touch_app, size: 35,),
+                    // trailing: const Icon(Icons.touch_app, size: 35,),
                     // leading: const Icon(Icons.radio_button_checked, color: Colors.red),
+                    trailing: IconButton(
+                      onPressed: () {
+                        showShiftDetails(context, brigade, stats);
+                      },
+                      icon: Icon(Icons.info, size: 40, color: Colors.blueAccent[100],), // Ваша иконка
+                      tooltip: 'Кол-во смен и часов в выбранный месяц'
+                    ), // Всплывающая подсказка (опционально)
                     onLongPress: () {
-                      showShiftDetails(context, brigade, stats);
+                      editBrigadeName(context, index);
                     },
                   ),
                 );
