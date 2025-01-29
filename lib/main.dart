@@ -141,7 +141,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
           title: Text(
             brigade,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme.of(context).textTheme.titleLarge,
             ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -192,7 +192,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
           title: const Text('Изменить название бригады'),
           content: TextField(
             controller: textController,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme.of(context).textTheme.titleLarge,
             // decoration: const InputDecoration(
             //   labelText: 'Название бригады',
             // ),
@@ -232,7 +232,8 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
         calculateMonthlyStats(selectedDate);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title),
+      appBar: AppBar(),
+      // appBar: AppBar(title: Text(widget.title),
       // actions: [
       //   if (focusedDay.year != DateTime.now().year || focusedDay.month != DateTime.now().month)
       //   IconButton(
@@ -247,9 +248,12 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
       //     },
       //   ),
       // ],
-    ),
+    // ),
       body: Column(
         children: [
+          Text(widget.title,
+          style: Theme.of(context).textTheme.headlineLarge
+          ),
           //Календарь
           TableCalendar(
             locale: 'ru_RU',
@@ -286,7 +290,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
             style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.green),),
             // icon: const Icon(Icons.sync, size: 32,),
             child: Text(
-              'Вернуться к текущему месяцу',
+              'Вернуться к текущей дате',
               style: Theme.of(context).textTheme.displaySmall,
               ),
           ),

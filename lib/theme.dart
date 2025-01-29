@@ -18,49 +18,55 @@ ThemeData customTheme(Brightness brightness) {
         : Colors.black, // Фон для темной темы
 
     appBarTheme: AppBarTheme(
-      toolbarHeight: 70.0, // Высота AppBar
+      toolbarHeight: 0, // Высота AppBar
       backgroundColor: brightness == Brightness.light
           ? Colors.white // Фон AppBar для светлой темы
           : Colors.black, // Фон AppBar для темной темы
       foregroundColor: brightness == Brightness.light
           ? Colors.black // Текст и иконки для светлой темы
           : Colors.white, // Текст и иконки для темной темы
-      centerTitle: true, // Центрирование текста
-      titleTextStyle: GoogleFonts.notoSerif(// Шрифт текста AppBar
-        fontSize: 48,
-        color: brightness == Brightness.light
-            ? Colors.black // Текст AppBar для светлой темы
-            : Colors.white, // Текст AppBar для темной темы
-      ),
+      // centerTitle: true, // Центрирование текста
+      // titleTextStyle: GoogleFonts.notoSerif(// Шрифт текста AppBar
+      //   fontSize: 48,
+      //   color: brightness == Brightness.light
+      //       ? Colors.black // Текст AppBar для светлой темы
+      //       : Colors.white, // Текст AppBar для темной темы
+      // ),
     ),
 
     textTheme: TextTheme(
+      headlineLarge: GoogleFonts.notoSerif(
+        color: brightness == Brightness.light
+            ? Colors.black // Цвет текста для светлой темы
+            : Colors.white, // Цвет текста для темной темы
+            fontSize: 48,
+      ),
       displayLarge: TextStyle(
         color: brightness == Brightness.light
             ? Colors.black // Цвет текста для светлой темы
             : Colors.white, // Цвет текста для темной темы
-            fontSize: 25,
+            fontSize: 20,
       ),
       displayMedium: TextStyle(
         color: brightness == Brightness.light
             ? Colors.black // Цвет текста для светлой темы
             : Colors.white, // Цвет текста для темной темы
-            fontSize: 23,
+            fontSize: 18,
       ),
       displaySmall: TextStyle(
         color: brightness == Brightness.light
             ? Colors.black // Цвет текста для светлой темы
             : Colors.white, // Цвет текста для темной темы
-            fontSize: 18,
+            fontSize: 16,
       ),
-      titleLarge: TextStyle(// Текст бригады
-        fontSize: 25,
+      titleLarge: TextStyle(// Текст название бригады
+        fontSize: 20,
         color: brightness == Brightness.light
             ? Colors.grey[600] // Текст бригады (светлая тема)
             : Colors.grey[400], // Текст бригады (темная тема)
       ),
       titleMedium: TextStyle(// Текст смены
-        fontSize: 23,
+        fontSize: 18,
         color: brightness == Brightness.light
             ? Colors.black // Текст смены (светлая тема)
             : Colors.white, // Текст смены (темная тема)
@@ -84,7 +90,7 @@ extension CalendarTheme on ThemeData {
               : Colors.green, // Для темной темы
           shape: BoxShape.circle,// Круглая форма для дня
         ),
-        todayTextStyle: TextStyle(// Цвет текста выделения текущего дня
+        todayTextStyle: TextStyle(//Текст выделения текущего дня
           color: brightness == Brightness.light
               ? Colors.black // Текст для светлой темы
               : Colors.white, // Текст для темной темы
@@ -97,7 +103,7 @@ extension CalendarTheme on ThemeData {
               : Colors.blueAccent, // Темная тема
           shape: BoxShape.circle,
         ),
-        selectedTextStyle: TextStyle(// Цвет текста выделения выбранного дня
+        selectedTextStyle: TextStyle(//Текст выделения выбранного дня
           color: brightness == Brightness.light
               ? Colors.black // Текст для светлой темы
               : Colors.white, // Текст для темной темы
@@ -110,11 +116,11 @@ extension CalendarTheme on ThemeData {
               : Colors.white12,
           shape: BoxShape.circle,
         ),
-        defaultTextStyle: TextStyle(// Цвет текста для обычных дней
+        defaultTextStyle: TextStyle(//Текст для обычных дней
           color: brightness == Brightness.light
               ? Colors.black // Текст для светлой темы
               : Colors.white, // Текст для темной темы
-              fontSize: 18,
+              // fontSize: 12,
         ),
 
         // weekendDecoration: BoxDecoration(// Цвет для выходных дней
