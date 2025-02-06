@@ -27,9 +27,8 @@ class ShiftSchedulerApp extends StatelessWidget {
     );
   },
       title: 'График смен',
-      theme: customTheme(Brightness.light), // Подключение светлой темы
+      theme: customTheme(Brightness.light), // Светлая тема
       darkTheme: customTheme(Brightness.dark), // Темная тема
-      // darkTheme: darkTheme, // Подключение темной темы
       themeMode: ThemeMode.system, // Выбор темы в зависимости от настроек системы
       home: const ShiftScheduleScreen(title: 'График смен'),
     );
@@ -321,9 +320,9 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                       onPressed: () {
                         showShiftDetails(context, brigade, stats);
                       },
-                      icon: Icon(Icons.info, size: 40, color: Colors.blueAccent[100],), // Ваша иконка
-                      tooltip: 'Кол-во смен и часов в выбранный месяц'
-                    ), // Всплывающая подсказка (опционально)
+                      icon: Icon(Icons.info, size: 40, color: Colors.blueAccent[100],), //иконка
+                      tooltip: 'Кол-во смен и часов в выбранный месяц' // Всплывающая подсказка
+                    ),
                     onLongPress: () {
                       editBrigadeName(context, index);
                     },
