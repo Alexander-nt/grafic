@@ -293,8 +293,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               style: Theme.of(context).textTheme.displaySmall,
               ),
           ),
-          if (focusedDay.month == DateTime.now().month)
-          if ( focusedDay.year == DateTime.now().year)
+          if (focusedDay.month == DateTime.now().month && focusedDay.year == DateTime.now().year)
           const SizedBox(height: 48),
           Expanded(
             child: ListView.builder(
@@ -302,10 +301,12 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               itemBuilder: (context, index) {
                 final brigade = brigades[index];
                 final stats = monthlyStats[brigade]!;
+                final dateYou = DateFormat.yMd('ru_RU').format(selectedDate);
 
                 return Card(
                   child: ListTile(
                     title: Text(
+                      // '$brigade $dateYou',
                       brigade,
                         style: Theme.of(context).textTheme.titleLarge,
                     ),
