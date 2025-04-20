@@ -41,10 +41,10 @@ class ShiftScheduleScreen extends StatefulWidget {
   final String title;
 
   @override
-  _ShiftScheduleScreenState createState() => _ShiftScheduleScreenState();
+  ShiftScheduleScreenState createState() => ShiftScheduleScreenState();
 }
 
-class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
+class ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
   List<String> brigades = ['1(2)-я бригада','2(3)-я бригада','3(1)-я бригада','4(4)-я бригада'];
   final List<String> shifts = ['С ночной смены','Выходной','Дневная смена (08:00–20:00)','Ночная смена (20:00–08:00)'];
 
@@ -301,7 +301,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               itemBuilder: (context, index) {
                 final brigade = brigades[index];
                 final stats = monthlyStats[brigade]!;
-                final dateYou = DateFormat.yMd('ru_RU').format(selectedDate);
+                // final dateYou = DateFormat.yMd('ru_RU').format(selectedDate);
 
                 return Card(
                   child: ListTile(
