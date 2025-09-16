@@ -97,12 +97,12 @@ void _showShiftDialog(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                   if (provider.shiftsColrlight == true)
+                   if (shiftsColrlight == true)
                    const Text(
                     'Выбери бригаду для отслеживания:',
                     textAlign: TextAlign.center,
                   ),
-                   if (provider.shiftsColrlight == true)
+                   if (shiftsColrlight == true)
                    Card(
                      child: ListView.builder(
                         physics:const NeverScrollableScrollPhysics(),
@@ -135,15 +135,15 @@ void _showShiftDialog(BuildContext context) {
                         },
                       ),
                   ),
-                  if (provider.shiftsColrlight == true)
+                  if (shiftsColrlight == true)
                    const SizedBox(height: 30,),
-                  if (provider.shiftsColrlight == true)
+                  if (shiftsColrlight == true)
                   const Text(
                     'Выбери цвета отображения смен:',
                     textAlign: TextAlign.center,
                     // style: TextStyle(color: Colors.black54, fontSize: 16),
                   ),
-                   if (provider.shiftsColrlight == true)
+                   if (shiftsColrlight == true)
                     Card(
                       child: ListView.builder(
                         physics:const NeverScrollableScrollPhysics(),
