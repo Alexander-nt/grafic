@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grafic/import.dart';
 import 'package:provider/provider.dart';
+import 'package:grafic/import.dart';
 
-class BrigadesList extends StatefulWidget {
+
+class BrigadesList extends StatelessWidget {
   const BrigadesList({super.key});
 
+  // DateTime focusedDay = DateTime.now();
+
   @override
-  State<BrigadesList> createState() => _BrigadesListState();
-}
+  Widget build(BuildContext context) {
     const double dayShiftHours = 11.5;
     const double nightShiftHours = 4.0;
     const double fromNightShiftHours = 7.5;
-    
-class _BrigadesListState extends State<BrigadesList> {
-  @override
-  Widget build(BuildContext context) {
-
 
     Map<String, Map<String, dynamic>> calculateMonthlyStats(
         DateTime month, List<String> brigadeList) {
@@ -35,7 +32,7 @@ class _BrigadesListState extends State<BrigadesList> {
 
       for (int day = 1; day <= daysInMonth; day++) {
         DateTime date = DateTime(month.year, month.month, day);
-        final provider = context.read<AppDataProvider>();
+        final provider = context.watch<AppDataProvider>();
         final getShiftsForDate = provider.getShiftsForDate;
         List<String> dailyShifts = getShiftsForDate(date);
 
@@ -69,9 +66,9 @@ class _BrigadesListState extends State<BrigadesList> {
       return monthlyStats;
     }
 
-    final provider = context.read<AppDataProvider>();
-    final activeBrigades = context.watch<AppDataProvider>().currentBrigades;
-    final selectedDate = context.watch<AppDataProvider>().selectedDate;
+    final provider = context.watch<AppDataProvider>();
+    final activeBrigades = provider.currentBrigades;
+    final selectedDate = provider.selectedDate;
     final todayShifts = provider.getShiftsForDate(provider.selectedDate);
 
     int colorBrigadeIndex = 5;
@@ -94,36 +91,42 @@ class _BrigadesListState extends State<BrigadesList> {
           final shift = todayShifts[index % todayShifts.length];
 
           return Card(
-            child: ListTile(
-              title:
-                  Text(brigade, style: Theme.of(context).textTheme.titleLarge),
-              subtitle:
-                  Text(shift, style: Theme.of(context).textTheme.titleMedium),
-              splashColor: Colors.blueAccent,
-              leading: colorBrigadeIndex == index
-                  ? Icon(
-                      Icons.radio_button_on,
-                      color: provider.colorsShift(
-                          DateTime.now(), provider.currentSchedule),
-                    )
-                  : const Icon(
-                      Icons.radio_button_off,
-                      size: 0,
-                    ),
-              trailing: IconButton(
-                onPressed: () {
-                  HapticFeedback.vibrate();
-                  showShiftDetails(context, brigade, stats);
-                },
-                icon: Icon(Icons.info, size: 40, color: Colors.blueAccent[100]),
-                tooltip: 'Кол-во смен и часов в выбранный месяц',
-              ),
-              onLongPress: () {
-                editBrigadeName(context, index);
-              },
-              onTap: () {
-                HapticFeedback.vibrate();
-              },
+            child: Builder(
+              builder: (BuildContext context) {
+                return ListTile(
+                  title:
+                      Text(brigade, style: Theme.of(context).textTheme.titleLarge),
+                  subtitle:
+                      Text(shift, style: Theme.of(context).textTheme.titleMedium),
+                  splashColor: Colors.blueAccent,
+                  leading: colorBrigadeIndex == index
+                      ? Icon(
+                          Icons.radio_button_on,
+                          color: provider.colorsShift(
+                              DateTime.now(), provider.currentSchedule),
+                        )
+                      : const Icon(
+                          Icons.radio_button_off,
+                          size: 0,
+                        ),
+                  // selected: colorBrigadeIndex == index, // Выделяем, если индекс совпадает
+                  // selectedTileColor: provider.colorsShift(DateTime.now(), provider.currentSchedule), // Цвет подсветки для выбранного элемента
+                  trailing: IconButton(
+                    onPressed: () {
+                      HapticFeedback.vibrate();
+                      showShiftDetails(context, brigade, stats);
+                    },
+                    icon: Icon(Icons.info, size: 40, color: Colors.blueAccent[100]),
+                    tooltip: 'Кол-во смен и часов в выбранный месяц',
+                  ),
+                  onLongPress: () {
+                    editBrigadeName(context, index);
+                  },
+                  onTap: () {
+                    HapticFeedback.vibrate();
+                  },
+                );
+              }
             ),
           );
         },

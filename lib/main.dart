@@ -13,6 +13,15 @@ void main() async {
       child: const ShiftSchedulerApp(),
     ),
   );
+  // runApp(
+  // MultiProvider(
+  //   providers: [
+  //     ChangeNotifierProvider(create: (_) => AppDataProvider()),
+  //     ChangeNotifierProvider(create: (_) => DataProvider()),
+  //   ],
+    // child: const ShiftSchedulerApp(),
+  // ),
+// );
 }
 
 class ShiftSchedulerApp extends StatelessWidget {
@@ -59,25 +68,31 @@ class ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<AppDataProvider>();
     String focusedDay = toBeginningOfSentenceCase(
-      DateFormat.yMMMM('ru').format(provider.visibleMonth),
+      DateFormat.MMMM('ru').format(provider.visibleMonth),
       'ru',
-    )!;
+    );
+    String focusedYear = DateFormat.y('ru').format(provider.visibleMonth);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         titleSpacing: 0,
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
+        leading: SizedBox(
+          child: Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
         ),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          // verticalDirection: VerticalDirection.up,
           children: [
             IconButton(
               icon: const Icon(Icons.chevron_left),
@@ -89,10 +104,17 @@ class ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                 });
               },
             ),
-            SizedBox(
-                width: 250,
-                // height: 45,
-                child: Text(focusedDay, textAlign: TextAlign.center)),
+            Column(
+              children: [
+                Text(
+                  focusedDay,
+                ),
+                Text(
+                  focusedYear,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
             IconButton(
               icon: const Icon(Icons.chevron_right),
               onPressed: () {

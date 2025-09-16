@@ -217,16 +217,20 @@ extension CalendarTheme on ThemeData {
           if (provider.shiftsColrlight == true) {
             return Container(
               margin: const EdgeInsets.all(6),
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: brightness == Brightness.light
+              ? Colors.black // Текст для светлой темы
+              : Colors.white, // Текст для темной темы
                 shape: BoxShape.circle,
                 // borderRadius: BorderRadius.circular(8.0),
               ),
               alignment: Alignment.center,
               child: Text(
                 '${day.day}',
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: brightness == Brightness.light
+              ? Colors.white // Текст для светлой темы
+              : Colors.black, // Текст для темной темы
                   fontWeight: FontWeight.bold,
                   fontSize: 23,
                 ),
