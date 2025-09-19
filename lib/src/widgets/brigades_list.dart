@@ -99,7 +99,8 @@ class BrigadesList extends StatelessWidget {
                   subtitle:
                       Text(shift, style: Theme.of(context).textTheme.titleMedium),
                   splashColor: Colors.blueAccent,
-                  leading: colorBrigadeIndex == index
+                  leading: provider.shiftsColrlight
+                  ? (colorBrigadeIndex == index
                       ? Icon(
                           Icons.radio_button_on,
                           color: provider.colorsShift(
@@ -108,7 +109,8 @@ class BrigadesList extends StatelessWidget {
                       : const Icon(
                           Icons.radio_button_off,
                           size: 0,
-                        ),
+                        ))
+                  : null,
                   // selected: colorBrigadeIndex == index, // Выделяем, если индекс совпадает
                   // selectedTileColor: provider.colorsShift(DateTime.now(), provider.currentSchedule), // Цвет подсветки для выбранного элемента
                   trailing: IconButton(
