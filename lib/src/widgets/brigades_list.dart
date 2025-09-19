@@ -111,8 +111,6 @@ class BrigadesList extends StatelessWidget {
                           size: 0,
                         ))
                   : null,
-                  // selected: colorBrigadeIndex == index, // Выделяем, если индекс совпадает
-                  // selectedTileColor: provider.colorsShift(DateTime.now(), provider.currentSchedule), // Цвет подсветки для выбранного элемента
                   trailing: IconButton(
                     onPressed: () {
                       HapticFeedback.vibrate();
