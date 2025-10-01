@@ -65,7 +65,6 @@ class BrigadesList extends StatelessWidget {
 
       return monthlyStats;
     }
-
     final provider = context.watch<AppDataProvider>();
     final activeBrigades = provider.currentBrigades;
     final selectedDate = provider.selectedDate;
@@ -76,19 +75,30 @@ class BrigadesList extends StatelessWidget {
       colorBrigadeIndex = provider.currentBrigadeIndex;
     }
 
+    int listActiveBrigades = provider.currentBrigades.length;//0
+    if (provider.listIndexBrigade == true){
+      listActiveBrigades = 1;
+    }
+    int indexBrigade = provider.currentListBrigadeIndex;//0
+
     Map<String, Map<String, dynamic>> monthlyStats =
         calculateMonthlyStats(selectedDate, activeBrigades);
 
     return Expanded(
       child: ListView.builder(
-        itemCount: activeBrigades.length,
+        // itemCount: activeBrigades.length,
+        itemCount: listActiveBrigades,
         itemBuilder: (
           context,
           index,
         ) {
+          if (provider.listIndexBrigade == true) {//0
+            index = indexBrigade;//0
+          }
           final brigade = activeBrigades[index];
           final stats = monthlyStats[brigade]!;
           final shift = todayShifts[index % todayShifts.length];
+          
 
           return Card(
             child: Builder(

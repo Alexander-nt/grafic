@@ -58,7 +58,6 @@ class BoxButton extends StatelessWidget {
             provider.selectedDate = now;
             provider.focusedDay = now;
             provider.updateCalendar(now);
-            // print(shiftColor);
           },
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
@@ -70,6 +69,6 @@ class BoxButton extends StatelessWidget {
         ),
       );
     }
-    return const SizedBox(height: 38);
+    return const SizedBox(height: 54);
   }
 }

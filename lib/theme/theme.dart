@@ -166,6 +166,13 @@ extension CalendarTheme on ThemeData {
         defaultBuilder: (context, day, focusedDay) {
           final provider = context.watch<AppDataProvider>();
           Color shiftColor = provider.colorsShift(day, focusedDay);
+          Color colorDay() {
+           switch (brightness) {
+            case Brightness.light:
+             return Colors.black;
+            case Brightness.dark:
+             return Colors.white;
+            }}
           if (provider.shiftsColrlight == true) {
             return Container(
               margin: const EdgeInsets.all(6),
@@ -177,8 +184,8 @@ extension CalendarTheme on ThemeData {
               alignment: Alignment.center,
               child: Text(
                 '${day.day}',
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: colorDay(),
                   // fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -189,6 +196,13 @@ extension CalendarTheme on ThemeData {
         },
         todayBuilder: (context, day, focusedDay) {
           final provider = context.watch<AppDataProvider>();
+          Color colorToday() {
+           switch (brightness) {
+            case Brightness.light:
+             return Colors.white;
+            case Brightness.dark:
+             return Colors.black;
+            }}
           Color shiftColor = provider.colorsShift(day, focusedDay);
           if (provider.shiftsColrlight == true) {
             return Container(
@@ -201,8 +215,8 @@ extension CalendarTheme on ThemeData {
               alignment: Alignment.center,
               child: Text(
                 '${day.day}',
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: colorToday(),
                   fontWeight: FontWeight.bold,
                   fontSize: 23,
                 ),

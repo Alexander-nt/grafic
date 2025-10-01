@@ -13,9 +13,10 @@ List<Color> shiftColors = [
   Colors.yellowAccent,
   Colors.black,
   Colors.white,
-  Colors.transparent,
   Colors.grey,
   Colors.brown,
+  Colors.transparent,
+
 
 ];
 // отображения имени цвета
@@ -35,14 +36,14 @@ String colorToName(Color color) {
   return 'Цвет';
 }
 
-class DialogDisplayShifts extends StatefulWidget {
-  const DialogDisplayShifts({super.key});
+class DialogColorShifts extends StatefulWidget {
+  const DialogColorShifts({super.key});
 
   @override
-  State<DialogDisplayShifts> createState() => _DialogState();
+  State<DialogColorShifts> createState() => _DialogState();
 }
 
-class _DialogState extends State<DialogDisplayShifts> {
+class _DialogState extends State<DialogColorShifts> {
 
 void _showShiftDialog(BuildContext context) {
   final provider = context.read<AppDataProvider>();
@@ -55,7 +56,7 @@ void _showShiftDialog(BuildContext context) {
 
   showDialog(
     context: context,
-    barrierDismissible: false,
+    // barrierDismissible: false,
     builder: (context) {
       return StatefulBuilder(
       builder: (context, setStateDialog) {
@@ -65,7 +66,7 @@ void _showShiftDialog(BuildContext context) {
           margin: const EdgeInsets.only(right: 8),
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(24),
           ),
           child: Row(
@@ -97,12 +98,12 @@ void _showShiftDialog(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                   if (shiftsColrlight == true)
+                   if (shiftsColrlight == true && provider.listIndexBrigade == false)
                    const Text(
                     'Выбери бригаду для отслеживания:',
                     textAlign: TextAlign.center,
                   ),
-                   if (shiftsColrlight == true)
+                   if (shiftsColrlight == true && provider.listIndexBrigade == false)
                    Card(
                      child: ListView.builder(
                         physics:const NeverScrollableScrollPhysics(),
@@ -135,7 +136,7 @@ void _showShiftDialog(BuildContext context) {
                         },
                       ),
                   ),
-                  if (shiftsColrlight == true)
+                  if (shiftsColrlight == true && provider.listIndexBrigade == false)
                    const SizedBox(height: 30,),
                   if (shiftsColrlight == true)
                   const Text(
@@ -171,7 +172,6 @@ void _showShiftDialog(BuildContext context) {
                                       HapticFeedback.vibrate();
                                       setStateDialog(() {
                                         shiftsColors[index] = color;
-                                        // print(shiftsColors);
                                       });
                                     },
                                     itemBuilder: (context) => shiftColors
@@ -223,7 +223,7 @@ void _showShiftDialog(BuildContext context) {
                     }
                     provider.shiftsColrlight = shiftsColrlight;
                     provider.saveBrigadeindex();
-                    provider.saveshiftsColorlight();
+                    provider.saveBoolIndex();
                     Navigator.of(context).pop();
                   },
                   child: Text('Сохранить', style: Theme.of(context).textTheme.headlineSmall),
@@ -239,13 +239,15 @@ void _showShiftDialog(BuildContext context) {
   @override
   Widget build(BuildContext context,) {
     return ListTile(
-      title: const Text("Изменить цвет смены"),
+      title: const Text("Выбрать цвет смены"),
       leading: const Icon(Icons.edit_calendar),
       onTap: () {
-        setState(() {
+        HapticFeedback.selectionClick();
         Navigator.of(context).pop();
+        setState(() {
         _showShiftDialog(context);
         });
+        
       },
     );
   }

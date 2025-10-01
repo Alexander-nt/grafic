@@ -32,19 +32,33 @@ class AppDataProvider extends ChangeNotifier {
   int brigadeIndex2 = 0;
   bool shiftsColrlight = true;
 
+  int listBrigadeIndex = 3;
+  int listBrigadeIndex2 = 0;
+  bool listIndexBrigade = false;
+
   DateTime selectedDate = DateTime.now();
   DateTime visibleMonth = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
   ScheduleType currentSchedule = ScheduleType.dayToNight;
+
   List<String> get currentBrigades =>
       currentSchedule == ScheduleType.dayToNight ? brigades : brigades2;
   List<String> get currentShifts =>
       currentSchedule == ScheduleType.dayToNight ? shifts : shifts2;
   int get currentBrigadeIndex =>
       currentSchedule == ScheduleType.dayToNight ? brigadeIndex : brigadeIndex2;
+  int get currentListBrigadeIndex =>
+      currentSchedule == ScheduleType.dayToNight ? listBrigadeIndex : listBrigadeIndex2;
   List<Color> get currentShiftsColors =>
       currentSchedule == ScheduleType.dayToNight ? shiftColors : shiftColors2;
+
+  ThemeMode themeMode = ThemeMode.system; // по умолчанию системная тема
+  String titleTheme = 'Системная';
+
+  ThemeMode get currentThemeMode =>
+    titleTheme == 'Светлая' ?  themeMode = ThemeMode.light : titleTheme == 'Тёмная' ? themeMode = ThemeMode.dark : themeMode = ThemeMode.system ;
+
 
   Color colorsShift(DateTime day, focusedDay) {
     final shifts = getShiftsForDate(day);
@@ -97,23 +111,17 @@ class AppDataProvider extends ChangeNotifier {
   }
 
   List<Color> shiftColors = [
-    Colors.orangeAccent,
-    Colors.blueAccent,
-    Colors.green,
     Colors.redAccent,
-    Colors.purpleAccent,
-    Colors.lightGreenAccent,
-    Colors.yellowAccent
+    Colors.blueAccent,
+    Colors.orangeAccent,
+    Colors.green,
   ];
 
   List<Color> shiftColors2 = [
-    Colors.orangeAccent,
-    Colors.blueAccent,
-    Colors.green,
     Colors.redAccent,
-    Colors.purpleAccent,
-    Colors.lightGreenAccent,
-    Colors.yellowAccent
+    Colors.redAccent,
+    Colors.green,
+    Colors.green,
   ];
 
   void editBrigade(int index, String newName) {
@@ -141,7 +149,18 @@ class AppDataProvider extends ChangeNotifier {
     shifts2 = prefs.getStringList('shifts2') ?? shifts2;
     brigadeIndex = prefs.getInt('brigadeIndex') ?? brigadeIndex;
     brigadeIndex2 = prefs.getInt('brigadeIndex2') ?? brigadeIndex2;
+    listBrigadeIndex = prefs.getInt('listBrigadeIndex') ?? listBrigadeIndex;
+    listBrigadeIndex2 = prefs.getInt('listBrigadeIndex2') ?? listBrigadeIndex2;
     shiftsColrlight = prefs.getBool('shiftsColrlight') ?? shiftsColrlight;
+    listIndexBrigade = prefs.getBool('listIndexBrigade') ?? listIndexBrigade;
+    
+    notifyListeners(); // 👉 уведомляем UI
+  }
+
+
+  Future<void> saveTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('titleTheme', titleTheme);
     notifyListeners(); // 👉 уведомляем UI
   }
 
@@ -158,11 +177,12 @@ class AppDataProvider extends ChangeNotifier {
     notifyListeners(); // 👉 уведомляем UI
   }
 
-  Future<void> loadShiftsColrlight() async {
-    final prefs = await SharedPreferences.getInstance();
-    shiftsColrlight = prefs.getBool('shiftsColrlight') ?? shiftsColrlight;
-    // notifyListeners(); // 👉 уведомляем UI
-  }
+  // Future<void> loadShiftsColrlight() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   shiftsColrlight = prefs.getBool('shiftsColrlight') ?? shiftsColrlight;
+  //   listIndexBrigade = prefs.getBool('listIndexBrigade') ?? listIndexBrigade;
+  //   // notifyListeners(); // 👉 уведомляем UI
+  // }
 
   Future<void> saveBrigadeNames() async {
     final prefs = await SharedPreferences.getInstance();
@@ -192,17 +212,22 @@ class AppDataProvider extends ChangeNotifier {
     await prefs.setStringList('shiftColors', colorStrings);
     final colorStrings2 = shiftColors2.map((c) => c.value.toString()).toList();
     await prefs.setStringList('shiftColors2', colorStrings2);
+    await prefs.setInt('listBrigadeIndex', listBrigadeIndex);
+    await prefs.setInt('listBrigadeIndex2', listBrigadeIndex2);
+
     notifyListeners(); // 👉 уведомляем UI
   }
 
-  Future<void> saveshiftsColorlight() async {
+  Future<void> saveBoolIndex() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('shiftsColrlight', shiftsColrlight);
+    await prefs.setBool('listIndexBrigade', listIndexBrigade);
     notifyListeners(); // 👉 уведомляем UI
   }
 
   Future<void> loadScheduleType() async {
     final prefs = await SharedPreferences.getInstance();
+    titleTheme = prefs.getString('titleTheme') ?? titleTheme;
     int? index = prefs.getInt('scheduleType');
     if (index != null) {
       currentSchedule = ScheduleType.values[index];

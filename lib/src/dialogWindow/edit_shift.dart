@@ -3,7 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:grafic/import.dart';
 import 'package:provider/provider.dart';
 
-void editShiftsName(BuildContext context) {
+class DialogEditShift extends StatefulWidget {
+  const DialogEditShift({super.key});
+
+  @override
+  State<DialogEditShift> createState() => _DialogEditShiftState();
+}
+
+class _DialogEditShiftState extends State<DialogEditShift> {
+
+void editShift(BuildContext context) {
   final provider = context.read<AppDataProvider>();
 
   List<String> brigades = provider.currentBrigades;
@@ -106,4 +115,19 @@ void editShiftsName(BuildContext context) {
       );
     },
   );
+}
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: const Text("Редактировать смены"),
+      leading: const Icon(Icons.edit_calendar),
+      onTap: () {
+        setState(() {
+        Navigator.of(context).pop();
+        editShift(context);
+        });
+      },
+    );
+  }
 }
