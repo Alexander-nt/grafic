@@ -65,6 +65,8 @@ class ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final isLandscape =
+    //     MediaQuery.of(context).orientation == Orientation.landscape;
     return const Scaffold(
       appBar: DateBar(),
       drawer: MenuDrawer(),
@@ -81,6 +83,45 @@ class ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
           BrigadesList(),
         ],
       ),
+// body: isLandscape
+//         ? const Row(
+//             children: [
+//               Expanded(
+//                 child: Column(
+//                   children: [
+//                     SizedBox(height: 30,),
+//                     // DateBar(),
+//                     // Divider(height: 20,thickness: 1,indent: 20,endIndent: 20,),
+//                     Expanded(child: Calender()),
+//                     BoxButton(),
+//                   ],
+//                 ),
+//               ),
+//               // VerticalDivider(width: 1, color: Colors.grey[700]),
+//               Expanded(
+//                 // flex: 1,
+//                 child: BrigadesList(),
+//               ),
+//             ],
+//           )
+//         : const Column(
+//             // children: [
+//             //   Expanded(flex: 0, child: DateBar()),
+//             //   // Expanded(flex: 0, child: Divider(height: 20,thickness: 1,indent: 20,endIndent: 20,)),
+//             //   // Divider(height: 20,thickness: 1,indent: 20,endIndent: 20,),
+//             //   Expanded(flex: 0, child: Calender()),
+//             //   Expanded(flex: 0, child: BoxButton()),
+//             //   Expanded(flex: 0, child: BrigadesList()),
+//             // ],
+//             // crossAxisAlignment:
+//               children: [
+//                 DateBar(),
+//                 Divider(height: 20,thickness: 1,indent: 20,endIndent: 20,),
+//                 Calender(),
+//                 BoxButton(),
+//                 BrigadesList(),
+//               ],
+//           ),
     );
   }
 }

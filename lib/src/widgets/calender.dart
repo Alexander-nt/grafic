@@ -13,7 +13,7 @@ class Calender extends StatelessWidget {
     return TableCalendar(
       locale: 'ru_RU',
       firstDay: DateTime(2000),
-      lastDay: DateTime(2050),
+      lastDay: DateTime(2125),
       focusedDay: provider.focusedDay,
       weekendDays: const [],
       selectedDayPredicate: (day) => isSameDay(day, provider.selectedDate),
@@ -30,11 +30,26 @@ class Calender extends StatelessWidget {
         provider.focusedDay = newMonth;
         provider.updateCalendar(newMonth);
       },
+      onDayLongPressed: (selectedDay, focusedDay) {
+        HapticFeedback.vibrate();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Создать заметку',textAlign: TextAlign.center),
+            content: const Text('В разработке',textAlign: TextAlign.center),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('ОК',style: Theme.of(context).textTheme.headlineSmall),
+              ),
+            ],
+          ),
+        );
+      },
       headerVisible: false,
 
       calendarBuilders: Theme.of(context).calendarStyle2,
       calendarStyle: Theme.of(context).calendarStyle,
-      // calendarStyle: Theme.of(context).calendarStyle(shiftColor, shiftsColrlight),
       headerStyle: Theme.of(context).headerStyle,
     );
   }
@@ -50,9 +65,7 @@ class BoxButton extends StatelessWidget {
     final isCurrentMonth = provider.focusedDay.month == DateTime.now().month &&
         provider.focusedDay.year == DateTime.now().year;
     if (!isCurrentMonth) {
-      return Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: FilledButton(
+      return FilledButton(
           onPressed: () {
             HapticFeedback.lightImpact();
             provider.selectedDate = now;
@@ -61,14 +74,17 @@ class BoxButton extends StatelessWidget {
           },
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+            // minimumSize: WidgetStateProperty.all<Size>(
+            //   const Size(double.infinity, 40),
+            // ),
           ),
           child: Text(
             'Вернуться к текущей дате',
             style: Theme.of(context).textTheme.displaySmall,
           ),
-        ),
-      );
+        );
+      // );
     }
-    return const SizedBox(height: 54);
+    return const SizedBox(height: 48);
   }
 }

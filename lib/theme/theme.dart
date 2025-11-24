@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 ThemeData customTheme(Brightness brightness) {
   return ThemeData(
     brightness: brightness,
+    useMaterial3: true,
     primaryColor: brightness == Brightness.light
         ? Colors.white // Для светлой темы
         : Colors.black, // Для темной темы
@@ -90,7 +91,7 @@ ThemeData customTheme(Brightness brightness) {
             : Colors.white, // Текст смены (темная тема)
       ),
     ),
-    useMaterial3: true,
+    // useMaterial3: true,
   );
 }
 
