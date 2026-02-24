@@ -3,7 +3,7 @@ import 'package:grafic/import.dart';
 import 'package:provider/provider.dart';
 
 void editBrigadeName(BuildContext context, int index) {
-  final provider = context.read<AppDataProvider>(); // доступ к данным
+  final provider = context.read<AppDataProvider>();
   final textController =
       TextEditingController(text: provider.currentBrigades[index]);
 

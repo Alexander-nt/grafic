@@ -77,36 +77,38 @@ class _IndexBrigadeState extends State<DialogIndexBrigade> {
                     textAlign: TextAlign.center,
                   ),
                    if (listIndexBrigade == true)
-                   Card(
-                     child: ListView.builder(
-                        physics:const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        // itemCount: activeBrigades.length > 4 ? 4 : activeBrigades.length,
-                        itemCount: activeBrigades.length,
-                        itemBuilder: (context, index) {
-                          final brigade = activeBrigades[index];
+                   ListView.builder(
+                    physics:const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: activeBrigades.length,
+                    itemBuilder: (context, index) {
+                      final brigade = activeBrigades[index];
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Builder(
+                          builder: (BuildContext context) {
                             return ListTile(
-                              title: Text(brigade),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Radio<int>(
-                                    value: index,
-                                    groupValue: listBrigadeIndex,
-                                    onChanged: (int? value) {
-                                      if (value != null) {
-                                        HapticFeedback.vibrate();
-                                        setStateDialog(() {
-                                          listBrigadeIndex = value;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
                               ),
+                              splashColor: Colors.transparent,
+                              title: Text(brigade),
+                              trailing: Icon(
+                                listBrigadeIndex == index ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                              ),
+                              onTap: () {
+                                HapticFeedback.vibrate();
+                                setStateDialog(() {
+                                  listBrigadeIndex = index;
+                                });
+                              },
                             );
-                        },
-                      ),
+                          }
+                        ),
+                      );
+                    },
                   ),
                   ],
                 ),

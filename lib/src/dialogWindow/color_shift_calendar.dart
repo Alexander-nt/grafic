@@ -51,7 +51,7 @@ void _showShiftDialog(BuildContext context) {
   List<Color> shiftsColors = List.generate(provider.currentShifts.length, (index) => provider.currentShiftsColors[index % provider.currentShiftsColors.length]);
   List<String> activeBrigades = provider.currentBrigades;
   List<String> activeShifts = provider.currentShifts;
-  int br5 = provider.currentBrigadeIndex;
+  int brigadeIndex = provider.currentBrigadeIndex;
   bool shiftsColrlight = provider.shiftsColrlight;
 
   showDialog(
@@ -104,37 +104,39 @@ void _showShiftDialog(BuildContext context) {
                     textAlign: TextAlign.center,
                   ),
                    if (shiftsColrlight == true && provider.listIndexBrigade == false)
-                   Card(
-                     child: ListView.builder(
-                        physics:const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        // itemCount: activeBrigades.length > 4 ? 4 : activeBrigades.length,
-                        itemCount: activeBrigades.length,
-                        itemBuilder: (context, index) {
-                          final brigade = activeBrigades[index];
+                   ListView.builder(
+                    physics:const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    // itemCount: activeBrigades.length > 4 ? 4 : activeBrigades.length,
+                    itemCount: activeBrigades.length,
+                    itemBuilder: (context, index) {
+                      final brigade = activeBrigades[index];
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Builder(
+                          builder: (BuildContext context) {
                             return ListTile(
-                              title: Text(brigade),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Radio<int>(
-                                    value: index,
-                                    groupValue: br5,
-                                    onChanged: (int? value) {
-                                      if (value != null) {
-                                        HapticFeedback.vibrate();
-                                        setStateDialog(() {
-                                          br5 = value;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
                               ),
+                              splashColor: Colors.transparent,
+                              title: Text(brigade),
+                              trailing: Icon(
+                                brigadeIndex == index ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                              ),
+                              onTap: () {
+                                HapticFeedback.vibrate();
+                                setStateDialog(() {
+                                  brigadeIndex = index;
+                                });
+                              },
                             );
-                          // );
-                        },
-                      ),
+                          }
+                        )
+                      );
+                    },
                   ),
                   if (shiftsColrlight == true && provider.listIndexBrigade == false)
                    const SizedBox(height: 30,),
@@ -145,64 +147,65 @@ void _showShiftDialog(BuildContext context) {
                     // style: TextStyle(color: Colors.black54, fontSize: 16),
                   ),
                    if (shiftsColrlight == true)
-                    Card(
-                      child: ListView.builder(
+                   ListView.builder(
                         physics:const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        // itemCount: activeShifts.length > 4 ? 4 : activeShifts.length,
                         itemCount: activeShifts.length,
                         itemBuilder: (context, index) {
                           final shift = activeShifts[index];
-                            return ListTile(
-                              title: Text(shift),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  PopupMenuButton<Color>(
-                                    icon: Container(
-                                      width: 24,
-                                      height: 24,
-                                      decoration: BoxDecoration(
-                                        color: shiftsColors[index],
-                                        shape: BoxShape.circle,
-                                        border: Border.all(color: Colors.black26),
-                                      ),
+                          return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Builder(
+                            builder: (BuildContext context) {
+                              return ListTile(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                                splashColor: Colors.transparent,
+                                title: Text(shift),
+                                trailing: Material(
+                                  color: Colors.transparent,
+                                  shape: const CircleBorder(),
+                                  child: Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: shiftsColors[index],
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black26),
                                     ),
-                                    onSelected: (color) {
-                                      HapticFeedback.vibrate();
-                                      setStateDialog(() {
-                                        shiftsColors[index] = color;
-                                      });
-                                    },
-                                    itemBuilder: (context) => shiftColors
-                                        .map((color) => PopupMenuItem<Color>(
-                                              value: color,
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    width: 20,
-                                                    height: 20,
-                                                    decoration: BoxDecoration(
-                                                      color: color,
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(color: Colors.black26),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Text(colorToName(color)),
-                                                ],
-                                              ),
-                                            ))
-                                        .toList(),
                                   ),
-                                ],
-                              ),
-                            );
-                          // );
+                                ),
+                                onTap: () {
+                                  HapticFeedback.vibrate();
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (_) {
+                                      return ListView(
+                                        children: shiftColors.map((color) {
+                                          return ListTile(
+                                            leading: CircleAvatar(backgroundColor: color),
+                                            title: Text(colorToName(color)),
+                                            onTap: () {
+                                              setStateDialog(() {
+                                                shiftsColors[index] = color;
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                          );
+                                        }).toList(),
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            }
+                          )
+                          );
                         },
                       ),
-                    ),
-                  // ),
                   ],
                 ),
               ),
@@ -216,10 +219,10 @@ void _showShiftDialog(BuildContext context) {
                   onPressed: () {
                     if (provider.currentSchedule == ScheduleType.dayToNight) {
                           provider.shiftColors = shiftsColors;   
-                          provider.brigadeIndex = br5;         
+                          provider.brigadeIndex = brigadeIndex;         
                     } else if (provider.currentSchedule == ScheduleType.twoByTwo) {
                           provider.shiftColors2 = shiftsColors;     
-                          provider.brigadeIndex2 = br5;                         
+                          provider.brigadeIndex2 = brigadeIndex;                         
                     }
                     provider.shiftsColrlight = shiftsColrlight;
                     provider.saveBrigadeindex();

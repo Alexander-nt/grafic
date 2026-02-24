@@ -19,8 +19,10 @@ class AppDataProvider extends ChangeNotifier {
     'С ночной смены',
     'Выходной'
   ];
-
-  List<String> brigades2 = ['1-я бригада', '2-я бригада'];
+  List<String> brigades2 = [
+    '1-я бригада',
+    '2-я бригада'
+    ];
   List<String> shifts2 = [
     '1-я смена',
     '2-я смена',
@@ -208,9 +210,9 @@ class AppDataProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('brigadeIndex', brigadeIndex);
     await prefs.setInt('brigadeIndex2', brigadeIndex2);
-    final colorStrings = shiftColors.map((c) => c.value.toString()).toList();
+    final colorStrings = shiftColors.map((c) => c.toARGB32().toString()).toList();
     await prefs.setStringList('shiftColors', colorStrings);
-    final colorStrings2 = shiftColors2.map((c) => c.value.toString()).toList();
+    final colorStrings2 = shiftColors2.map((c) => c.toARGB32().toString()).toList();
     await prefs.setStringList('shiftColors2', colorStrings2);
     await prefs.setInt('listBrigadeIndex', listBrigadeIndex);
     await prefs.setInt('listBrigadeIndex2', listBrigadeIndex2);

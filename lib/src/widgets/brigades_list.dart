@@ -101,9 +101,15 @@ class BrigadesList extends StatelessWidget {
           
 
           return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
             child: Builder(
               builder: (BuildContext context) {
                 return ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
                   title:
                       Text(brigade, style: Theme.of(context).textTheme.titleLarge),
                   subtitle:

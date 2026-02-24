@@ -30,22 +30,22 @@ class Calender extends StatelessWidget {
         provider.focusedDay = newMonth;
         provider.updateCalendar(newMonth);
       },
-      onDayLongPressed: (selectedDay, focusedDay) {
-        HapticFeedback.vibrate();
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Создать заметку',textAlign: TextAlign.center),
-            content: const Text('В разработке',textAlign: TextAlign.center),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('ОК',style: Theme.of(context).textTheme.headlineSmall),
-              ),
-            ],
-          ),
-        );
-      },
+      // onDayLongPressed: (selectedDay, focusedDay) {
+      //   HapticFeedback.vibrate();
+      //   showDialog(
+      //     context: context,
+      //     builder: (context) => AlertDialog(
+      //       title: const Text('Создать заметку',textAlign: TextAlign.center),
+      //       content: const Text('В разработке',textAlign: TextAlign.center),
+      //       actions: [
+      //         ElevatedButton(
+      //           onPressed: () => Navigator.pop(context),
+      //           child: Text('ОК',style: Theme.of(context).textTheme.headlineSmall),
+      //         ),
+      //       ],
+      //     ),
+      //   );
+      // },
       headerVisible: false,
 
       calendarBuilders: Theme.of(context).calendarStyle2,
